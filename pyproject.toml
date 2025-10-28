@@ -3,7 +3,7 @@ name = "patternrecognition-group1"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = [
     "numpy",
     "matplotlib",
@@ -12,4 +12,5 @@ dependencies = [
     "pandas",
     "torch",
     "torchvision",
+    "ipykernel",
 ]
