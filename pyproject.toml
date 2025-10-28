@@ -13,4 +13,7 @@ dependencies = [
     "torch",
     "torchvision",
     "ipykernel",
+    "tqdm",
+    "matplotlib",
+    "scikit-learn"
 ]
