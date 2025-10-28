@@ -38,7 +38,7 @@ def main():
 
     history = train_model(
         model, train_dataloader, validation_dataloader, criterion, optimizer,
-        scheduler, device, num_epoch=1, patience=10
+        scheduler, device, num_epoch=50, patience=10
     )
 
     checkpoint = torch.load("best_model.pth")
