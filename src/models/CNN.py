@@ -1,5 +1,7 @@
 import torch.nn as nn
 
+# have to be reduce, this model is to huge to classify simple image such as MNIST ones.
+
 class CNN(nn.Module):
     def __init__(self, num_classes):
         super(CNN, self).__init__()
