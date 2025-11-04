@@ -212,3 +212,4 @@ data
 
 best_model.pth 
 training_history.png
+submission.csv

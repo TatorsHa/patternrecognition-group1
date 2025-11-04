@@ -5,7 +5,8 @@ import torch
 from tqdm import tqdm
 from sklearn.metrics import f1_score
 import matplotlib.pyplot as plt
-
+import pandas as pd
+import os
 
 
 def generate_dataloader(ds, shuffle, batch_size):
@@ -14,7 +15,8 @@ def generate_dataloader(ds, shuffle, batch_size):
     )
 
 
-def generate_dataloaders(data_path, train_df, test_df, batch_size, train_size=0.8):
+def generate_dataloaders(data_path, train_df, batch_size, train_size=0.8):
+    """Generate train and validation dataloaders (no test dataloader for competition)"""
     transform = transforms.Compose(
         [
             transforms.Resize((28, 28)),
@@ -34,12 +36,9 @@ def generate_dataloaders(data_path, train_df, test_df, batch_size, train_size=0.
         generator=torch.Generator().manual_seed(42),
     )
 
-    test_dataset = ImageDataset(data_path, test_df, transform=transform)
-
     return (
         generate_dataloader(train_dataset, True, batch_size),
-        generate_dataloader(val_dataset, True, batch_size),
-        generate_dataloader(test_dataset, True, batch_size),
+        generate_dataloader(val_dataset, False, batch_size),
         len(train_df[1].unique()),
     )
 
@@ -156,23 +155,55 @@ def train_model(
     return history
 
 
-def test_model(model, test_loader, device):
+def generate_submission(model, data_path, device, output_file="submission.csv"):
+    """
+    Generate submission file for Kaggle competition.
+    Reads test-files.tsv and creates predictions for all test images.
+    """
+    # Read test files list
+    test_files_path = os.path.join(data_path, "test-files.tsv")
+    test_files_df = pd.read_csv(test_files_path, delimiter="\t", header=None)
+    
+    print(f"Number of test files: {len(test_files_df)}")
+    
+    # Create transform
+    transform = transforms.Compose(
+        [
+            transforms.Resize((28, 28)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.5], std=[0.5]),
+        ]
+    )
+    
+    # Create dataset for test files (without labels)
+    test_dataset = ImageDataset(data_path, test_files_df, transform=transform, test_mode=True)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=4)
+    
+    # Generate predictions
     model.eval()
     all_predictions = []
-    all_labels = []
+    all_file_paths = []
     
     with torch.no_grad():
-        for images, labels in tqdm(test_loader, desc='Testing'):
-            images, labels = images.to(device), labels.to(device)
+        for images, file_paths in tqdm(test_loader, desc='Generating predictions'):
+            images = images.to(device)
             outputs = model(images)
             _, predicted = torch.max(outputs, 1)
             
             all_predictions.extend(predicted.cpu().numpy())
-            all_labels.extend(labels.cpu().numpy())
+            all_file_paths.extend(file_paths)
     
-    test_f1 = f1_score(all_labels, all_predictions, average='macro') * 100
+    # Create submission dataframe
+    submission_df = pd.DataFrame({
+        'ID': all_file_paths,
+        'Class': all_predictions
+    })
     
-    return test_f1
+    # Save to CSV
+    submission_df.to_csv(output_file, index=False)
+    print(f"Submission saved to {output_file}")
+    print(f"Total predictions: {len(submission_df)}")
+
 
 def plot_history(history):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
@@ -189,11 +220,12 @@ def plot_history(history):
     
     ax2.plot(epochs, history['train_f1'], 'b-', label='Train F1', linewidth=2)
     ax2.plot(epochs, history['validation_f1'], 'r-', label='Validation F1', linewidth=2)
-    ax2.set_title('Training and Validation Accuracy')
+    ax2.set_title('Training and Validation F1 Score', fontsize=14, fontweight='bold')
     ax2.set_xlabel('Epoch', fontsize=12)
-    ax2.set_ylabel('F1', fontsize=12)
+    ax2.set_ylabel('F1 Score (%)', fontsize=12)
     ax2.legend(fontsize=11)
     ax2.grid(True, alpha=0.3)
     
     plt.tight_layout()
     plt.savefig('training_history.png', bbox_inches='tight')
+    print("Training history plot saved as 'training_history.png'")
