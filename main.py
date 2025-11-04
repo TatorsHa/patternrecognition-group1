@@ -13,7 +13,6 @@ PATIENCE = 10
 
 
 def main():
-    # Load training data only (test data has no labels for competition)
     train_df = pd.read_csv(os.path.join(DATA_PATH, "gt-train.tsv"), delimiter="\t", header=None)
 
     print(f"Train set shape: {train_df.shape}")
@@ -42,14 +41,12 @@ def main():
         scheduler, device, num_epoch=NUMBER_OF_EPOCHS, patience=PATIENCE
     )
 
-    # Load best model
     checkpoint = torch.load("best_model.pth")
     model.load_state_dict(checkpoint['model_state_dict'])
     
     print(f"\nBest validation F1: {checkpoint['validation_f1']:.2f}%")
 
     # Generate submission file for Kaggle
-    print("\nGenerating submission file...")
     generate_submission(
         model=model,
         data_path=DATA_PATH,
@@ -58,7 +55,6 @@ def main():
     )
     print("Submission file 'submission.csv' created successfully!")
 
-    # Plot training history
     plot_history(history)
 
 

@@ -156,17 +156,10 @@ def train_model(
 
 
 def generate_submission(model, data_path, device, output_file="submission.csv"):
-    """
-    Generate submission file for Kaggle competition.
-    Reads test-files.tsv and creates predictions for all test images.
-    """
-    # Read test files list
     test_files_path = os.path.join(data_path, "test-files.tsv")
     test_files_df = pd.read_csv(test_files_path, delimiter="\t", header=None)
     
-    print(f"Number of test files: {len(test_files_df)}")
     
-    # Create transform
     transform = transforms.Compose(
         [
             transforms.Resize((28, 28)),
@@ -175,11 +168,9 @@ def generate_submission(model, data_path, device, output_file="submission.csv"):
         ]
     )
     
-    # Create dataset for test files (without labels)
     test_dataset = ImageDataset(data_path, test_files_df, transform=transform, test_mode=True)
     test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=4)
     
-    # Generate predictions
     model.eval()
     all_predictions = []
     all_file_paths = []
@@ -193,16 +184,13 @@ def generate_submission(model, data_path, device, output_file="submission.csv"):
             all_predictions.extend(predicted.cpu().numpy())
             all_file_paths.extend(file_paths)
     
-    # Create submission dataframe
     submission_df = pd.DataFrame({
         'ID': all_file_paths,
         'Class': all_predictions
     })
     
-    # Save to CSV
     submission_df.to_csv(output_file, index=False)
     print(f"Submission saved to {output_file}")
-    print(f"Total predictions: {len(submission_df)}")
 
 
 def plot_history(history):
@@ -228,4 +216,3 @@ def plot_history(history):
     
     plt.tight_layout()
     plt.savefig('training_history.png', bbox_inches='tight')
-    print("Training history plot saved as 'training_history.png'")
