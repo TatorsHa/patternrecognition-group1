@@ -19,14 +19,21 @@ data
 ## Implementation
 ### SVM
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-Add some lines about your choices, implementation whatever
+__Implementation__ : We used pytorch to load and configure the dataset into greyscale vector of size 1x784. We then used sklearn library to train a linear SVM model and a RBF SVM model.
 
+__Best Configuration__ : We tested the RBF model on different magnitudes of C-Values. Looking at online SVM sources allowed us to narrow the test ranges from 10^-1 to 10^2. For the task at hand the best C-Value is around 10 (10^1).
+
+__Model Evaluation__ : The Linear model achieved an accuracy of ~0.917, while the RBF model with the optimal C-Value achieved an accuracy of ~0.987 on the test set. 
+
+__Additional Experiments__ : We tried to graph the RBF function to see better how the mdel chooses to classify the numbers, but we weren't able to properly able to interpret the large vectors as 2D vectors in a way which makes sense to view.
 
 #### Results
-![SVM c-value vs accuracy](./SVM/SVM_RBF_Ctest.png)
+![SVM RBF C-values vs Accuracy](./SVM/SVM_RBF_Ctest.png)
 
-Accuracy: ~0.983
+Accuracy: ~0.987
+
+## Discussion
+For the current task of identifying numbers the SVM RBF model looks a bit superior to the Linear SVM model. The SVM RBF performs very well on this task with a high accuracy.  
 
 ### MLP
 __Architecture Selection__ : We initially started with the implementation of an MLP with a single hidden layer testing various combination of hidden size and learning rate. 
