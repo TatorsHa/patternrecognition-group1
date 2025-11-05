@@ -214,5 +214,5 @@ data
 training_history.png
 *.csv
 *.pt
-CNN/exploration/runs
+*.json
 *.docx
