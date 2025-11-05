@@ -54,7 +54,7 @@ Test accuracy: 0.980
 We experimented with kernel size, number of convolutional layers, and learning rate.
 The best-performing model used two convolutional layers, kernel size 5, and learning rate 0.001, achieving a validation accuracy of 99.18% and test accuracy of 99.24%.
 Smaller kernels or lower learning rates slightly reduced accuracy, while a single-layer CNN underperformed.
-The validation and test metrics were closely aligned, indicating excellent generalization and minimal overfitting.
+The validation and test metrics were closely aligned, indicating good generalization and minimal overfitting.
 
 
 #### Results
@@ -71,7 +71,7 @@ On the MNIST dataset, adding more convolutional layers usually provides only ver
 |--------|---------------------|----------------|---------------------|
 | SVM (RBF) |  |  |  |
 | MLP (1 hidden = 128) |  |  |  |
-| CNN (2 conv × 5×5) | 99.1 % | 99.0 % | lr = 0.001, dropout = 0.25 |
+| CNN (2 conv × 5×5) | 99.18 % | 99.24 % | kernel = 5, conv layers = 2, lr = 0.001, dropout = 0.25 |
 
 Table 1 provides a comparison of the final test accuracies obtained by the three classifiers.  
 The CNN achieved the highest accuracy, confirming the advantage of spatial feature extraction over the fully connected MLP and the kernel-based SVM for image data.  
