@@ -51,4 +51,17 @@ The validation and test metrics were closely aligned, indicating excellent gener
 ![confusion matrix](./CNN/exploration/runs/cnn_baseline/confusion_matrix.png)
 
 ## Discussion
-On the MNIST dataset, adding more convolutional layers usually provides only very small improvements, because the images are simple, grayscale, and low-resolution. Two convolutional layers are already enough to capture the essential hierarchical features — from edges to digit shapes — and achieve test accuracies around 99 %. Deeper models can slightly increase accuracy (perhaps by 0.1 – 0.3 %) but at the cost of longer training times and a higher risk of overfitting, so ... not worth trying?
+
+On the MNIST dataset, adding more convolutional layers usually provides only very small improvements, because the images are simple, grayscale, and low-resolution. Two convolutional layers are already enough to capture the essential hierarchical features — from edges to digit shapes — and achieve test accuracies around 99 %. Deeper models can slightly increase accuracy (perhaps by 0.1 – 0.3 %) but at the cost of longer training times and a higher risk of overfitting, so ... worth trying?
+
+**Table 1 – Comparison of Classifier Performance**
+| Model | Validation Accuracy | Test Accuracy | Key Hyperparameters |
+|--------|---------------------|----------------|---------------------|
+| SVM (RBF) |  |  |  |
+| MLP (1 hidden = 128) |  |  |  |
+| CNN (2 conv × 5×5) | 99.1 % | 99.0 % | lr = 0.001, dropout = 0.25 |
+
+Table 1 provides a comparison of the final test accuracies obtained by the three classifiers.  
+The CNN achieved the highest accuracy, confirming the advantage of spatial feature extraction over the fully connected MLP and the kernel-based SVM for image data.  
+*(Note: This text and the table serve as an example/template and need to be adapted once everybody have added their final results.)*
+
