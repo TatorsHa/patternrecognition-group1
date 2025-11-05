@@ -8,8 +8,8 @@ import os
 # -----------------------
 # Config
 # -----------------------
-TRAIN_DIR = "MNIST-full/MNIST-full/train"
-TEST_DIR = "MNIST-full/MNIST-full/test"
+TRAIN_DIR = "./data/MNIST/train"
+TEST_DIR = "./data/MNIST/test"
 SEED = 42
 IMG_SIZE = (28, 28)
 
