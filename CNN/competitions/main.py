@@ -8,7 +8,7 @@ import os
 
 BATCH_SIZE = 64
 DATA_PATH = "./data/Fashion-MNIST"
-NUMBER_OF_EPOCHS = 50
+NUMBER_OF_EPOCHS = 100
 PATIENCE = 10
 
 

@@ -8,10 +8,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
+NBR_WORKERS = 4
 
 def generate_dataloader(ds, shuffle, batch_size):
     return DataLoader(
-        ds, batch_size=batch_size, shuffle=shuffle, num_workers=4, pin_memory=True
+        ds, batch_size=batch_size, shuffle=shuffle, num_workers=NBR_WORKERS
     )
 
 
@@ -133,6 +134,8 @@ def train_model(
         history["validation_loss"].append(validation_loss)
         history["validation_f1"].append(validation_f1)
 
+        print(f"Validation loss: {validation_loss}, f1: {validation_f1}")
+
         if validation_f1 > best_f1_score:
             best_f1_score = validation_f1
             torch.save(
@@ -169,7 +172,7 @@ def generate_submission(model, data_path, device, output_file="submission.csv"):
     )
     
     test_dataset = ImageDataset(data_path, test_files_df, transform=transform, test_mode=True)
-    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=4)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False, num_workers=NBR_WORKERS)
     
     model.eval()
     all_predictions = []

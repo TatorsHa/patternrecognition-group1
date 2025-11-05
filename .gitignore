@@ -210,6 +210,9 @@ __marimo__/
 # Data 
 data
 
-best_model.pth 
+*.pth 
 training_history.png
-submission.csv
+*.csv
+*.pt
+CNN/exploration/runs
+*.docx
