@@ -26,6 +26,8 @@ Add some lines about your choices, implementation whatever
 #### Results
 ![SVM c-value vs accuracy](./SVM/SVM_RBF_Ctest.png)
 
+Accuracy: ~0.983
+
 ### MLP
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Add some lines about your choices, implementation whatever
@@ -33,6 +35,8 @@ Add some lines about your choices, implementation whatever
 #### Results
 ![Training curve](./MLP/training-curve.png)
 ![Confusion matrix](./MLP/confusion-matrix.png)
+
+Test accuracy: 0.980
 
 ### CNN
 We experimented with kernel size, number of convolutional layers, and learning rate.
